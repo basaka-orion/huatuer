@@ -19,6 +19,13 @@ struct DrawingView: View {
     @State private var showGenerationProgress = false
     @State private var generationProgress = 0.0
     @State private var currentStep = "准备中..."
+    @State private var showARPreview = false
+    @State private var showAIMentor = false
+    @State private var showStyleLearner = false
+    @State private var showCollaborativeCanvas = false
+    @State private var showStyleTransfer = false
+    @State private var showMusicDrawing = false
+    @State private var showAIAssistant = false
     
     // 语音识别
     @State private var speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "zh-CN"))
@@ -44,70 +51,230 @@ struct DrawingView: View {
                 Spacer()
                 
                 // 底部工具栏
-                HStack {
-                    // 左下角 - 画笔工具
-                    Button(action: {
-                        withAnimation(.spring()) {
-                            isDrawingToolsVisible.toggle()
+                VStack(spacing: 16) {
+                    // 第一行：新增AI功能
+                    HStack {
+                        Spacer()
+
+                        // 风格迁移按钮
+                        Button(action: {
+                            showStyleTransfer = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Text("🎨")
+                                    .font(.title2)
+                                Text("风格迁移")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
                         }
-                    }) {
-                        ZStack {
-                            Circle()
-                                .fill(.ultraThinMaterial)
-                                .frame(width: 60, height: 60)
-                                .shadow(color: .white.opacity(0.2), radius: 8)
-                            
-                            Image(systemName: "paintbrush.pointed.fill")
-                                .font(.title2)
-                                .foregroundColor(.white)
+
+                        Spacer()
+
+                        // 音乐绘画按钮
+                        Button(action: {
+                            showMusicDrawing = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Text("🎵")
+                                    .font(.title2)
+                                Text("音乐绘画")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
                         }
+
+                        Spacer()
+
+                        // AI助手按钮
+                        Button(action: {
+                            showAIAssistant = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Text("🤖")
+                                    .font(.title2)
+                                Text("AI助手")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
+                        }
+
+                        Spacer()
                     }
-                    
-                    Spacer()
-                    
-                    // 中间 - 语音输入
-                    Button(action: {
-                        if isVoiceRecording {
-                            stopRecording()
-                        } else {
-                            startRecording()
+
+                    // 第二行：原有AI功能
+                    HStack {
+                        Spacer()
+
+                        // AR预览按钮
+                        Button(action: {
+                            showARPreview = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "arkit")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                                Text("AR预览")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
                         }
-                    }) {
-                        ZStack {
-                            Circle()
-                                .fill(isVoiceRecording ? 
-                                      LinearGradient(colors: [.red, .pink], startPoint: .top, endPoint: .bottom) :
-                                      LinearGradient(colors: [.blue, .purple], startPoint: .top, endPoint: .bottom))
-                                .frame(width: 70, height: 70)
-                                .shadow(color: isVoiceRecording ? .red.opacity(0.5) : .blue.opacity(0.3), radius: 10)
-                                .scaleEffect(isVoiceRecording ? 1.1 : 1.0)
-                                .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: isVoiceRecording)
-                            
-                            Image(systemName: isVoiceRecording ? "mic.fill" : "mic")
-                                .font(.title)
-                                .foregroundColor(.white)
+
+                        Spacer()
+
+                        // AI导师按钮
+                        Button(action: {
+                            showAIMentor = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "brain.head.profile")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                                Text("AI导师")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
                         }
+
+                        Spacer()
+
+                        // 风格学习器按钮
+                        Button(action: {
+                            showStyleLearner = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "graduationcap.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                                Text("风格学习")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
+                        }
+
+                        Spacer()
                     }
-                    
-                    Spacer()
-                    
-                    // 右下角 - 风格选择
-                    Menu {
-                        ForEach(Array(styles.enumerated()), id: \.offset) { index, style in
-                            Button(styleNames[index]) {
-                                selectedStyle = style
+
+                    // 第二行：原有工具
+                    HStack {
+                        // 左下角 - 画笔工具
+                        Button(action: {
+                            withAnimation(.spring()) {
+                                isDrawingToolsVisible.toggle()
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 60, height: 60)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+
+                                Image(systemName: "paintbrush.pointed.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
                             }
                         }
-                    } label: {
-                        ZStack {
-                            Circle()
-                                .fill(.ultraThinMaterial)
-                                .frame(width: 60, height: 60)
-                                .shadow(color: .white.opacity(0.2), radius: 8)
-                            
-                            Image(systemName: "paintpalette.fill")
-                                .font(.title2)
-                                .foregroundColor(.white)
+
+                        Spacer()
+
+                        // 中间 - 语音输入
+                        Button(action: {
+                            if isVoiceRecording {
+                                stopRecording()
+                            } else {
+                                startRecording()
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(isVoiceRecording ?
+                                          LinearGradient(colors: [.red, .pink], startPoint: .top, endPoint: .bottom) :
+                                          LinearGradient(colors: [.blue, .purple], startPoint: .top, endPoint: .bottom))
+                                    .frame(width: 70, height: 70)
+                                    .shadow(color: isVoiceRecording ? .red.opacity(0.5) : .blue.opacity(0.3), radius: 10)
+                                    .scaleEffect(isVoiceRecording ? 1.1 : 1.0)
+                                    .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: isVoiceRecording)
+
+                                Image(systemName: isVoiceRecording ? "mic.fill" : "mic")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
+                        }
+
+                        Spacer()
+
+                        // 协作画布按钮
+                        Button(action: {
+                            showCollaborativeCanvas = true
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 60, height: 60)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+
+                                Image(systemName: "person.2.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                            }
+                        }
+
+                        Spacer()
+
+                        // 右下角 - 风格选择
+                        Menu {
+                            ForEach(Array(styles.enumerated()), id: \.offset) { index, style in
+                                Button(styleNames[index]) {
+                                    selectedStyle = style
+                                }
+                            }
+                        } label: {
+                            ZStack {
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 60, height: 60)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+
+                                Image(systemName: "paintpalette.fill")
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
                 }
@@ -194,6 +361,31 @@ struct DrawingView: View {
                 progress: $generationProgress,
                 currentStep: $currentStep
             )
+        }
+        .sheet(isPresented: $showARPreview) {
+            if let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0) {
+                ARPreviewView(artworkImage: image)
+            }
+        }
+        .sheet(isPresented: $showAIMentor) {
+            if let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0) {
+                AIMentorView(artworkImage: image)
+            }
+        }
+        .sheet(isPresented: $showStyleLearner) {
+            StyleLearnerView()
+        }
+        .fullScreenCover(isPresented: $showCollaborativeCanvas) {
+            CollaborativeCanvasView()
+        }
+        .fullScreenCover(isPresented: $showStyleTransfer) {
+            StyleTransferView()
+        }
+        .fullScreenCover(isPresented: $showMusicDrawing) {
+            MusicDrivenDrawingView()
+        }
+        .fullScreenCover(isPresented: $showAIAssistant) {
+            AIAssistantView()
         }
     }
     

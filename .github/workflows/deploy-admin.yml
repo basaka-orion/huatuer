@@ -32,13 +32,28 @@ jobs:
         cache: 'npm'
         cache-dependency-path: admin-dashboard/package.json
 
+    - name: 检查文件结构
+      working-directory: ./admin-dashboard
+      run: |
+        echo "检查admin-dashboard目录结构:"
+        ls -la
+        echo "检查package.json:"
+        cat package.json
+
     - name: 安装依赖
       working-directory: ./admin-dashboard
-      run: npm install
-      
+      run: |
+        echo "开始安装依赖..."
+        npm install --verbose
+        echo "依赖安装完成"
+
     - name: 构建项目
       working-directory: ./admin-dashboard
-      run: npm run build
+      run: |
+        echo "开始构建项目..."
+        npm run build
+        echo "构建完成，检查输出目录:"
+        ls -la out/ || echo "out目录不存在"
       env:
         NEXT_PUBLIC_API_URL: https://api.huatuer.com/v1
         NEXT_PUBLIC_WS_URL: wss://ws.huatuer.com
