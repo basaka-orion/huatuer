@@ -30,11 +30,11 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: admin-dashboard/package-lock.json
-        
+        cache-dependency-path: admin-dashboard/package.json
+
     - name: 安装依赖
       working-directory: ./admin-dashboard
-      run: npm ci
+      run: npm install
       
     - name: 构建项目
       working-directory: ./admin-dashboard
