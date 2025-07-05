@@ -1,0 +1,61 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # 华图儿后端API监控
+  - job_name: 'huatuer-backend'
+    static_configs:
+      - targets: ['backend:5000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Redis监控
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    metrics_path: '/metrics'
+
+  # Celery Worker监控
+  - job_name: 'celery-worker'
+    static_configs:
+      - targets: ['celery_worker:8080']
+    metrics_path: '/metrics'
+
+  # WebSocket服务监控
+  - job_name: 'websocket-service'
+    static_configs:
+      - targets: ['websocket:8080']
+    metrics_path: '/health'
+
+  # Nginx监控
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:80']
+    metrics_path: '/nginx_status'
+
+  # 管理后台监控
+  - job_name: 'admin-dashboard'
+    static_configs:
+      - targets: ['admin_dashboard:3000']
+    metrics_path: '/api/health'
+
+  # 系统监控
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Prometheus自监控
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

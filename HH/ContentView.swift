@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  HH
+//  华图儿AI创意绘画应用
 //
 //  Created by ooo on 2025/7/5.
 //
@@ -9,53 +9,82 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var selectedTab = 1 // 默认选中"画"
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
+        ZStack {
+            // 星空背景
+            StarryBackground()
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
+            TabView(selection: $selectedTab) {
+                // 图迹页面
+                HistoryView()
+                    .tabItem {
+                        Image(systemName: "clock.arrow.circlepath")
+                        Text("图迹")
+                    }
+                    .tag(0)
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+                // 主画板页面
+                DrawingView()
+                    .tabItem {
+                        Image(systemName: "paintbrush.pointed.fill")
+                        Text("画")
+                    }
+                    .tag(1)
+
+                // 个人页面
+                ProfileView()
+                    .tabItem {
+                        Image(systemName: "person.circle.fill")
+                        Text("我")
+                    }
+                    .tag(2)
             }
+            .accentColor(.white)
+        }
+        .preferredColorScheme(.dark)
+    }
+}
+
+// 星空背景组件
+struct StarryBackground: View {
+    @State private var animateStars = false
+
+    var body: some View {
+        ZStack {
+            // 深色渐变背景
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(red: 0.05, green: 0.05, blue: 0.15),
+                    Color(red: 0.1, green: 0.05, blue: 0.2),
+                    Color(red: 0.15, green: 0.1, blue: 0.25)
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+
+            // 星星效果
+            ForEach(0..<50, id: \.self) { _ in
+                Circle()
+                    .fill(Color.white.opacity(Double.random(in: 0.3...0.8)))
+                    .frame(width: CGFloat.random(in: 1...3))
+                    .position(
+                        x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
+                        y: CGFloat.random(in: 0...UIScreen.main.bounds.height)
+                    )
+                    .scaleEffect(animateStars ? 1.2 : 0.8)
+                    .animation(
+                        Animation.easeInOut(duration: Double.random(in: 2...4))
+                            .repeatForever(autoreverses: true)
+                            .delay(Double.random(in: 0...2)),
+                        value: animateStars
+                    )
+            }
+        }
+        .onAppear {
+            animateStars = true
         }
     }
 }
