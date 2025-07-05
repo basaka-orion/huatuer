@@ -1,5 +1,4 @@
 import SwiftUI
-import Speech
 import AVFoundation
 
 // MARK: - AI助手状态

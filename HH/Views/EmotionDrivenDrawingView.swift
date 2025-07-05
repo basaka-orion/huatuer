@@ -1,6 +1,5 @@
 import SwiftUI
 import AVFoundation
-import Vision
 
 // MARK: - 情感类型
 enum EmotionType: String, CaseIterable {
@@ -91,9 +90,8 @@ struct EmotionDrivenDrawingView: View {
     @State private var selectedEmotionMode: EmotionMode = .realtime
     @State private var drawingSuggestion: DrawingSuggestion?
     
-    // 相机相关
-    @State private var captureSession = AVCaptureSession()
-    @State private var previewLayer: AVCaptureVideoPreviewLayer?
+    // 相机相关（模拟实现）
+    @State private var cameraEnabled = false
     
     var body: some View {
         NavigationView {

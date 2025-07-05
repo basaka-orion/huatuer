@@ -1,6 +1,5 @@
 import SwiftUI
 import AVFoundation
-import Accelerate
 
 // MARK: - 音乐情感类型
 enum MusicEmotion: String, CaseIterable {

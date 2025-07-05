@@ -1,6 +1,4 @@
 import SwiftUI
-import SceneKit
-import ARKit
 
 // MARK: - 3D创作模式类型
 enum ThreeDMode: String, CaseIterable {
