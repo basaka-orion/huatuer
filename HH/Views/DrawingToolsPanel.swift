@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PencilKit
+import PencilKit
 
 struct DrawingToolsPanel: View {
     @Binding var canvasView: PKCanvasView
