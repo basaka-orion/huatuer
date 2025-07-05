@@ -1,0 +1,65 @@
+name: 部署华图儿管理后台到GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'admin-dashboard/**'
+      - '.github/workflows/deploy-admin.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: admin-dashboard/package-lock.json
+        
+    - name: 安装依赖
+      working-directory: ./admin-dashboard
+      run: npm ci
+      
+    - name: 构建项目
+      working-directory: ./admin-dashboard
+      run: npm run build
+      env:
+        NEXT_PUBLIC_API_URL: https://api.huatuer.com/v1
+        NEXT_PUBLIC_WS_URL: wss://ws.huatuer.com
+        NEXT_PUBLIC_APP_NAME: 华图儿管理后台
+        
+    - name: 设置Pages
+      uses: actions/configure-pages@v4
+      
+    - name: 上传构建产物
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./admin-dashboard/out
+        
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: 部署到GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

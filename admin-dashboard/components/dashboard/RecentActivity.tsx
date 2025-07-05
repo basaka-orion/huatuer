@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { User, Palette, Heart, Share2, Clock } from 'lucide-react'
 
 interface Activity {
@@ -55,28 +54,25 @@ const getActivityIcon = (type: Activity['type']) => {
     case 'user_register':
       return { icon: User, color: 'text-green-400 bg-green-400/20' }
     case 'creation_complete':
-      return { icon: Palette, color: 'text-cute-purple bg-cute-purple/20' }
+      return { icon: Palette, color: 'text-purple-400 bg-purple-400/20' }
     case 'share':
-      return { icon: Share2, color: 'text-cute-blue bg-cute-blue/20' }
+      return { icon: Share2, color: 'text-blue-400 bg-blue-400/20' }
     case 'like':
-      return { icon: Heart, color: 'text-cute-pink bg-cute-pink/20' }
+      return { icon: Heart, color: 'text-pink-400 bg-pink-400/20' }
     default:
       return { icon: Clock, color: 'text-white/60 bg-white/10' }
   }
 }
 
-export function RecentActivity() {
+export default function RecentActivity() {
   return (
     <div className="space-y-4">
       {activities.map((activity, index) => {
         const { icon: Icon, color } = getActivityIcon(activity.type)
-        
+
         return (
-          <motion.div
+          <div
             key={activity.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
             className="flex items-center gap-4 p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors duration-200"
           >
             {/* 活动图标 */}
@@ -85,38 +81,33 @@ export function RecentActivity() {
             </div>
             
             {/* 用户头像 */}
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cute-blue to-cute-purple flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
               {activity.user.charAt(0)}
             </div>
-            
+
             {/* 活动内容 */}
             <div className="flex-1 min-w-0">
               <p className="text-white text-sm">
-                <span className="font-semibold text-cute-blue">{activity.user}</span>
+                <span className="font-semibold text-blue-400">{activity.user}</span>
                 {' '}
                 <span className="text-white/80">{activity.description}</span>
               </p>
             </div>
-            
+
             {/* 时间 */}
             <div className="text-white/50 text-xs flex-shrink-0">
               {activity.time}
             </div>
-          </motion.div>
+          </div>
         )
       })}
-      
+
       {/* 查看更多 */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.6 }}
-        className="text-center pt-4"
-      >
-        <button className="text-cute-blue hover:text-cute-purple transition-colors duration-200 text-sm font-medium">
+      <div className="text-center pt-4">
+        <button className="text-blue-400 hover:text-purple-400 transition-colors duration-200 text-sm font-medium">
           查看更多活动 →
         </button>
-      </motion.div>
+      </div>
     </div>
   )
 }

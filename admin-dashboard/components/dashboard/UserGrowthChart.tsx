@@ -12,7 +12,7 @@ const data = [
   { month: '7月', users: 720 },
 ]
 
-export function UserGrowthChart() {
+export default function UserGrowthChart() {
   return (
     <div className="h-64">
       <ResponsiveContainer width="100%" height="100%">

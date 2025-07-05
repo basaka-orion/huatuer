@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  }
+  
+  .glass-button {
+    @apply backdrop-blur-md bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200;
+  }
+}
+
+/* 星空动画效果 */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.star {
+  animation: twinkle 2s infinite;
+}
+
+.star:nth-child(2n) {
+  animation-delay: 0.5s;
+}
+
+.star:nth-child(3n) {
+  animation-delay: 1s;
+}
+
+.star:nth-child(4n) {
+  animation-delay: 1.5s;
+}
+
+/* 可爱的圆角和阴影 */
+.cute-card {
+  @apply rounded-3xl shadow-2xl;
+}
+
+.cute-button {
+  @apply rounded-2xl px-6 py-3 font-medium transition-all duration-200 transform hover:scale-105;
+}
+
+/* 毛玻璃效果增强 */
+.enhanced-glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* 渐变文字效果 */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 加载动画 */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
