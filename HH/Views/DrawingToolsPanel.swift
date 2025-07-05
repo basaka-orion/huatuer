@@ -102,7 +102,7 @@ struct DrawingToolsPanel: View {
                             Text("画笔大小")
                         }
                         .accentColor(.blue)
-                        .onChange(of: brushSize) { _ in
+                        .onChange(of: brushSize) { _, _ in
                             updateCanvasTool()
                         }
                         
