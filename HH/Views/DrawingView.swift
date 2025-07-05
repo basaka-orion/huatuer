@@ -26,6 +26,9 @@ struct DrawingView: View {
     @State private var showStyleTransfer = false
     @State private var showMusicDrawing = false
     @State private var showAIAssistant = false
+    @State private var showGlobalCommunity = false
+    @State private var showThreeDCreation = false
+    @State private var showEmotionDrawing = false
     
     // 语音识别
     @State private var speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "zh-CN"))
@@ -120,7 +123,75 @@ struct DrawingView: View {
                         Spacer()
                     }
 
-                    // 第二行：原有AI功能
+                    // 第二行：更多AI功能
+                    HStack {
+                        Spacer()
+
+                        // 全球社区按钮
+                        Button(action: {
+                            showGlobalCommunity = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Text("🌍")
+                                    .font(.title2)
+                                Text("全球社区")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
+                        }
+
+                        Spacer()
+
+                        // 3D创作按钮
+                        Button(action: {
+                            showThreeDCreation = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Text("🎬")
+                                    .font(.title2)
+                                Text("3D创作")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
+                        }
+
+                        Spacer()
+
+                        // 情感绘画按钮
+                        Button(action: {
+                            showEmotionDrawing = true
+                        }) {
+                            VStack(spacing: 4) {
+                                Text("🧠")
+                                    .font(.title2)
+                                Text("情感绘画")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(width: 70, height: 60)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: .white.opacity(0.2), radius: 8)
+                            )
+                        }
+
+                        Spacer()
+                    }
+
+                    // 第三行：原有AI功能
                     HStack {
                         Spacer()
 
@@ -386,6 +457,15 @@ struct DrawingView: View {
         }
         .fullScreenCover(isPresented: $showAIAssistant) {
             AIAssistantView()
+        }
+        .fullScreenCover(isPresented: $showGlobalCommunity) {
+            GlobalCommunityView()
+        }
+        .fullScreenCover(isPresented: $showThreeDCreation) {
+            ThreeDCreationView()
+        }
+        .fullScreenCover(isPresented: $showEmotionDrawing) {
+            EmotionDrivenDrawingView()
         }
     }
     
